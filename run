@@ -5,6 +5,8 @@ docker run \
   --name rebase-labs \
   -w /app \
   -v $(pwd):/app \
+  -v labs-gems:/usr/local/bundle\
   -p 3000:3000 \
+  --network rebase-network\
   ruby \
-  bash -c "gem install rack sinatra puma && ruby server.rb"
+  bash -c "bundle install && ruby server.rb"

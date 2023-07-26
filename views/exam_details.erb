@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informações dos Exames</title>
+  <!-- Adicione o link para o CSS do Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Estilos CSS personalizados aqui (se necessário) */
+    .exams-table {
+      margin-top: 20px;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .content {
+      position: absolute;
+      background-color: #f9f9f9;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header mt-3">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="fw-bold">TOKEN: <span id="token"></span></p>
+        </div>
+        <div class="col-md-6">
+          <p class="fw-bold text-md-end">Data dos Exames: <span id="examDate"></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="exams-table mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Tipo de Exame</th>
+          </tr>
+        </thead>
+        <tbody id="examsBody">
+          <!-- Linhas da tabela com os tipos de exame serão adicionadas dinamicamente aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Adicione o link para o JavaScript do Bootstrap (opcional) -->
+  <!-- Este link é apenas necessário se você estiver utilizando os componentes interativos do Bootstrap -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
+  <script>
+// JavaScript aqui
+document.addEventListener('DOMContentLoaded', () => {
+  // Função para exibir o dropdown com informações do exame
+  function showDropdown(event, limits, result) {
+    // ... Código do dropdown continua o mesmo
+  }
+
+  // Função para fechar o dropdown
+  function closeDropdown() {
+    // ... Código do fechamento do dropdown continua o mesmo
+  }
+
+  // Faz a requisição AJAX para obter os dados dos exames
+  fetch('/tests')
+    .then(response => response.json())
+    .then(data => {
+      const tokenElement = document.getElementById('token');
+      const examDateElement = document.getElementById('examDate');
+      const examsBodyElement = document.getElementById('examsBody');
+
+      tokenElement.textContent = data.result_token;
+      examDateElement.textContent = data.result_date;
+
+      // Cria as linhas da tabela com os tipos de exame, limites e resultados
+      data.tests.forEach(test => {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = test.type;
+        cell.addEventListener('click', (event) => showDropdown(event, test.limits, test.result));
+        row.appendChild(cell);
+        examsBodyElement.appendChild(row);
+      });
+    })
+    .catch(error => {
+      console.error('Ocorreu um erro ao obter os dados dos exames:', error);
+    });
+});
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

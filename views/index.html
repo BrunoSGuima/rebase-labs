@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rebase Labs</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <form class="form-inline my-2 my-lg-0" id="searchForm">
+      <input class="form-control mr-sm-2" type="search" placeholder="Digite seu token" aria-label="Search" id="searchInput">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+    </form>
+    <div id="errorMsg" class="mt-2"></div>
+  </nav>
+
+  <div class="container mt-4 bg-dark-alt">
+    <table class="table table-striped" id="exams">
+      <thead class="thead-dark">
+        <tr>
+          <th>Token</th>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Email</th>
+          <th>Nascimento</th>
+          <th>Resultado</th>
+          <th>Médico</th>
+          <th>CRM</th>
+          <th>Estado</th>
+          <th>Detalhes</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    fetch('/exams')
+      .then(response => response.json())
+      .then(data => {
+        const examsTable = document.querySelector('#exams tbody');
+        data.forEach(exam => {
+          const tr = document.createElement('tr');
+
+          ['result_token', 'name', 'cpf', 'email', 'birthday', 'result_date', 
+          'doctor.name', 'doctor.crm', 'doctor.crm_state'].forEach(key => {
+            const td = document.createElement('td');
+            const [objectKey, subKey] = key.split('.');
+            td.textContent = subKey ? exam[objectKey][subKey] : exam[key];
+            tr.appendChild(td);
+          });
+
+          const tdDetails = document.createElement('td');
+          const detailsLink = document.createElement('a');
+          detailsLink.href = '/exams/' + exam.result_token;
+          detailsLink.textContent = 'Detalhes';
+          tdDetails.appendChild(detailsLink);
+          tr.appendChild(tdDetails);
+
+          examsTable.appendChild(tr);
+        });
+      });
+  </script>
+
+  <script>
+    document.querySelector('#searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var token = document.querySelector('#searchInput').value;
+
+      fetch('/exams/' + token)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Exame não encontrado');
+          }
+          return response.json();
+        })
+        .then(data => {
+          window.location.href = '/exams/' + token;
+        })
+        .catch(error => {
+          var searchInput = document.querySelector('#searchInput');
+          searchInput.placeholder = error.message;
+          searchInput.value = '';
+          setTimeout(() => {
+            searchInput.placeholder = 'Digite seu token';
+          }, 3000);
+        });
+    });
+  </script>
+</body>
+</html>
+

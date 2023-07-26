@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  web:
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - labs-gems:/usr/local/bundle
+    command: bash -c "bundle install && ruby server.rb"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - rebase-network
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./postgres-data-rebase-labs:/var/lib/postgresq/data
+    networks:
+      - rebase-network
+
+networks:
+  rebase-network:
+
+volumes:
+  labs-gems:
