@@ -1,4 +1,6 @@
+
 require 'sinatra'
+require 'rack/handler/puma'
 require 'json'
 require_relative 'exam'
 
@@ -46,39 +48,47 @@ get '/' do
   File.open('views/index.html')
 end
 
-get '/exams/:token' do
-  content_type :json
+get '/exams/:token/data' do
   token = params['token']
-  exams = Exam.find_all_by_token(token)
+  result = Exam.find_by_token(token)
 
-  if exams.empty?
-    {}.to_json
+  if result
+    send_file 'views/exam_details.html', :type => 'html'
   else
-    exam_results = exams.map { |exam| OpenStruct.new(exam) }
-    exam_info = exam_results.first
-    {
-      'result_token' => token,
-      'result_date' => exam_info.exame_data,
-      'tests' => exam_results.map do |exam|
-        {
-          'type' => exam.exame_tipo,
-          'limits' => exam.exame_limites,
-          'result' => exam.exame_resultado
-        }
-      end
-    }.to_json
+    status 404
+    { error: 'Nenhum exame encontrado' }.to_json
   end
 end
 
-get '/exams-details/:token' do
-  # Faz a requisição para a API buscando os dados dos exames pelo token
-  response = HTTParty.get("http://localhost:3000/exams/#{params[:token]}")
-  data = JSON.parse(response.body)
 
-  # Renderiza a página exam_details.erb com os dados dos exames
-  erb :exam_details, locals: { data: data }
+get '/exams/:token' do
+  content_type :json
+  token = params['token']
+  exams_hash = Exam.find_by_token(token)
+
+  if exams_hash[token]&.any?
+    exams = exams_hash[token]
+    patient_info = exams.first.slice('cpf', 'paciente_nome', 'paciente_email', 'paciente_data_nascimento', 'paciente_endereco', 'paciente_cidade', 'paciente_estado')
+    doctor_info = exams.first.slice('medico_crm', 'medico_crm_estado', 'medico_nome', 'medico_email')
+
+    exame_data = exams.first['exame_data']
+
+    result = {
+      "Paciente" => patient_info,
+      "Médico" => doctor_info,
+      "Exames" => {
+        "Exame Token" => token,
+        "Data do Exame" => exame_data,
+        "Resultados" => exams.map.with_index { |exam, index| "#{index + 1}. Tipo: #{exam['exame_tipo']}, Limites: #{exam['exame_limites']}, Resultado: #{exam['exame_resultado']}" }
+      }
+    }
+
+    result.to_json
+  else
+    status 404
+    { error: 'Nenhum exame encontrado' }.to_json
+  end
 end
-
 
 
 Rack::Handler::Puma.run(

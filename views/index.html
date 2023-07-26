@@ -53,7 +53,7 @@
 
           const tdDetails = document.createElement('td');
           const detailsLink = document.createElement('a');
-          detailsLink.href = '/exams/' + exam.result_token;
+          detailsLink.href = '/exams/' + exam.result_token + '/data';
           detailsLink.textContent = 'Detalhes';
           tdDetails.appendChild(detailsLink);
           tr.appendChild(tdDetails);
@@ -77,7 +77,7 @@
           return response.json();
         })
         .then(data => {
-          window.location.href = '/exams/' + token;
+          window.location.href = '/exams/' + token + '/data';
         })
         .catch(error => {
           var searchInput = document.querySelector('#searchInput');

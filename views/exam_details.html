@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Detalhes do Exame</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container mt-4" id="examDetails"></div>
+
+  <script>
+    window.addEventListener('load', function() {
+      var token = window.location.pathname.split('/')[2];
+
+      fetch('/exams/' + token)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Nenhum exame encontrado');
+          }
+          return response.json();
+        })
+        .then(data => {
+        const examDetailsDiv = document.getElementById('examDetails');
+
+        const patientDetailsHtml = `
+          <div class="row">
+            <div class="col">
+              <h2>Paciente</h2>
+              <table class="table">
+                <tr><td>Nome:</td><td>${data.Paciente.paciente_nome}</td></tr>
+                <tr><td>Data de Nascimento:</td><td>${data.Paciente.paciente_data_nascimento}</td></tr>
+                <tr><td>Endereço:</td><td>${data.Paciente.paciente_endereco}</td></tr>
+                <tr><td>Cidade:</td><td>${data.Paciente.paciente_cidade}</td></tr>
+                <tr><td>Estado:</td><td>${data.Paciente.paciente_estado}</td></tr>
+              </table>
+            </div>
+            <div class="col">
+              <h2>Médico</h2>
+              <table class="table">
+                <tr><td>Nome:</td><td>${data.Médico.medico_nome}</td></tr>
+                <tr><td>CRM:</td><td>${data.Médico.medico_crm}</td></tr>
+                <tr><td>Estado do CRM:</td><td>${data.Médico.medico_crm_estado}</td></tr>
+                <tr><td>Email:</td><td>${data.Médico.medico_email}</td></tr>
+              </table>
+            </div>
+          </div>`;
+
+        let examDetailsHtml = `<h2>Detalhes do Exame</h2>
+          <table class="table">
+            <tr><td>Token:</td><td>${data.Exames["Exame Token"]}</td></tr>
+            <tr><td>Data:</td><td>${data.Exames["Data do Exame"]}</td></tr>
+          </table>
+          <h3>Resultados</h3>
+          <table class="table">`;
+
+        data.Exames.Resultados.forEach(result => {
+          examDetailsHtml += `<tr><td>${result}</td></tr>`;
+        });
+
+        examDetailsHtml += `</table>`;
+
+        examDetailsDiv.innerHTML = patientDetailsHtml + examDetailsHtml;
+      })
+        .catch(error => {
+          console.error('Erro:', error);
+        });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
