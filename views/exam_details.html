@@ -3,11 +3,21 @@
 <head>
   <title>Detalhes do Exame</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="container mt-4" id="examDetails"></div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <form class="form-inline my-2 my-lg-0" id="searchForm">
+      <input class="form-control mr-sm-2" type="search" placeholder="Digite seu token" aria-label="Search" id="searchInput">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+    </form>
+    <div id="errorMsg" class="mt-2"></div>
+  </nav>
+
+  <div class="container mt-4 bg-dark-alt" id="examDetails"></div>
 
   <script>
     window.addEventListener('load', function() {
@@ -21,13 +31,13 @@
           return response.json();
         })
         .then(data => {
-        const examDetailsDiv = document.getElementById('examDetails');
+          const examDetailsDiv = document.getElementById('examDetails');
 
-        const patientDetailsHtml = `
+          const patientDetailsHtml = `
           <div class="row">
             <div class="col">
               <h2>Paciente</h2>
-              <table class="table">
+              <table class="table table-striped">
                 <tr><td>Nome:</td><td>${data.Paciente.paciente_nome}</td></tr>
                 <tr><td>Data de Nascimento:</td><td>${data.Paciente.paciente_data_nascimento}</td></tr>
                 <tr><td>Endereço:</td><td>${data.Paciente.paciente_endereco}</td></tr>
@@ -37,7 +47,7 @@
             </div>
             <div class="col">
               <h2>Médico</h2>
-              <table class="table">
+              <table class="table table-striped">
                 <tr><td>Nome:</td><td>${data.Médico.medico_nome}</td></tr>
                 <tr><td>CRM:</td><td>${data.Médico.medico_crm}</td></tr>
                 <tr><td>Estado do CRM:</td><td>${data.Médico.medico_crm_estado}</td></tr>
@@ -46,22 +56,39 @@
             </div>
           </div>`;
 
-        let examDetailsHtml = `<h2>Detalhes do Exame</h2>
-          <table class="table">
-            <tr><td>Token:</td><td>${data.Exames["Exame Token"]}</td></tr>
-            <tr><td>Data:</td><td>${data.Exames["Data do Exame"]}</td></tr>
-          </table>
-          <h3>Resultados</h3>
-          <table class="table">`;
+          let examDetailsHtml = `<h3>Resultados</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Limites</th>
+                  <th scope="col">Resultado</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>`;
 
-        data.Exames.Resultados.forEach(result => {
-          examDetailsHtml += `<tr><td>${result}</td></tr>`;
-        });
+          data.Exames.Resultados.forEach(result => {
+            let parts = result.split(', ');
+            let tipo = parts[0].split(': ')[1];
+            let limites = parts[1].split(': ')[1];
+            let resultado = parseInt(parts[2].split(': ')[1]);
 
-        examDetailsHtml += `</table>`;
+            let limitesParts = limites.split('-');
+            let lowerLimit = parseInt(limitesParts[0]);
+            let upperLimit = parseInt(limitesParts[1]);
 
-        examDetailsDiv.innerHTML = patientDetailsHtml + examDetailsHtml;
-      })
+            let icon = '<i class="bi bi-exclamation-diamond-fill"></i>';
+            if (resultado >= lowerLimit && resultado <= upperLimit) {
+              icon = '<i class="bi bi-check-circle-fill"></i>';
+            }
+
+            examDetailsHtml += `<tr><td>${tipo}</td><td>${limites}</td><td>${resultado}</td><td>${icon}</td></tr>`;
+          });
+
+          examDetailsDiv.innerHTML = patientDetailsHtml + examDetailsHtml;
+        })
         .catch(error => {
           console.error('Erro:', error);
         });
@@ -69,12 +96,4 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
 
