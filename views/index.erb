@@ -6,15 +6,9 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <form class="form-inline my-2 my-lg-0" id="searchForm">
-      <input class="form-control mr-sm-2" type="search" placeholder="Digite seu token" aria-label="Search" id="searchInput">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
-    </form>
-    <div id="errorMsg" class="mt-2"></div>
-  </nav>
+  <%= erb :_navbar %>
 
-  <div class="container mt-4 bg-dark-alt">
+  <div class="container-fluid mt-3 bg-dark-alt">
     <table class="table table-striped" id="exams">
       <thead class="thead-dark">
         <tr>
@@ -63,32 +57,8 @@
       });
   </script>
 
-  <script>
-    document.querySelector('#searchForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      var token = document.querySelector('#searchInput').value;
-
-      fetch('/exams/' + token)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Exame não encontrado');
-          }
-          return response.json();
-        })
-        .then(data => {
-          window.location.href = '/exams/' + token + '/data';
-        })
-        .catch(error => {
-          var searchInput = document.querySelector('#searchInput');
-          searchInput.placeholder = error.message;
-          searchInput.value = '';
-          setTimeout(() => {
-            searchInput.placeholder = 'Digite seu token';
-          }, 3000);
-        });
-    });
-  </script>
+  <%= erb :_search %>
 </body>
 </html>
+
 

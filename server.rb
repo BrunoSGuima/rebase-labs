@@ -44,16 +44,15 @@ get '/exams' do
 end
 
 get '/' do
-  content_type :html
-  File.open('views/index.html')
+  erb :index
 end
 
 get '/exams/:token/data' do
   token = params['token']
-  result = Exam.find_by_token(token)
+  @result = Exam.find_by_token(token)
 
-  if result
-    send_file 'views/exam_details.html', :type => 'html'
+  if @result
+    erb :exam_details
   else
     status 404
     { error: 'Nenhum exame encontrado' }.to_json
@@ -89,7 +88,6 @@ get '/exams/:token' do
     { error: 'Nenhum exame encontrado' }.to_json
   end
 end
-
 
 Rack::Handler::Puma.run(
   Sinatra::Application,

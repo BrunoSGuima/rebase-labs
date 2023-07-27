@@ -1,10 +1,13 @@
 require 'pg'
 
 class Exam
-  def self.all
-    db = PG.connect(host: 'db', user: 'myuser', password: 'password')
 
-    result = db.exec('SELECT pacientes.cpf AS cpf, pacientes.nome AS paciente_nome, pacientes.email AS 
+  def self.db_connect
+    PG.connect(host: 'db', user: 'myuser', password: 'password')
+  end
+
+  def self.all
+    result = db_connect.exec('SELECT pacientes.cpf AS cpf, pacientes.nome AS paciente_nome, pacientes.email AS 
       paciente_email, pacientes.data_nascimento AS paciente_data_nascimento, pacientes.endereco AS 
       paciente_endereco, pacientes.cidade AS paciente_cidade, pacientes.estado AS paciente_estado, 
       medicos.crm AS medico_crm, medicos.estado_crm AS medico_crm_estado, medicos.nome AS medico_nome, medicos.email AS 
@@ -14,9 +17,7 @@ class Exam
   end
 
   def self.find_by_token(token)
-    db = PG.connect(host: 'db', user: 'myuser', password: 'password')
-  
-    result = db.exec_params(
+    result = db_connect.exec_params(
       'SELECT pacientes.cpf AS cpf, pacientes.nome AS paciente_nome, pacientes.email AS 
       paciente_email, pacientes.data_nascimento AS paciente_data_nascimento, pacientes.endereco AS 
       paciente_endereco, pacientes.cidade AS paciente_cidade, pacientes.estado AS paciente_estado, 
@@ -27,15 +28,4 @@ class Exam
   
     result.group_by { |exam| exam["exame_token"] }
   end
-  
-
-  def self.find_all_by_token(token)
-    result = $conn_postgres.exec_params('SELECT * FROM exames WHERE token = $1', [token])
-    result.map do |row|
-      exam = self.new
-      exam.from_hash(row)
-      exam
-    end
-  end
-
 end
