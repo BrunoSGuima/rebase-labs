@@ -7,12 +7,26 @@ services:
       - .:/app
       - labs-gems:/usr/local/bundle
     command: bash -c "bundle install && ruby server.rb"
+    environment: 
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "3000:3000"
     depends_on:
       - db
-    networks:
-      - rebase-network
+      - redis
+  sidekiq:
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - labs-gems:/usr/local/bundle
+    command: bash -c "bundle exec sidekiq -r ./app/worker.rb"
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - redis
+  redis:
+    image: redis
   db:
     image: postgres
     ports:
@@ -21,12 +35,7 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: password
     volumes:
-      - ./postgres-data-rebase-labs:/var/lib/postgresq/data
-    networks:
-      - rebase-network
-
-networks:
-  rebase-network:
+      - ./postgres-data-rebase-labs:/var/lib/postgresql/data
 
 volumes:
   labs-gems:

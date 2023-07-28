@@ -1,4 +1,3 @@
-<script>
 document.querySelector('#searchForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -23,4 +22,3 @@ document.querySelector('#searchForm').addEventListener('submit', function(e) {
       }, 3000);
     });
 });
-</script>

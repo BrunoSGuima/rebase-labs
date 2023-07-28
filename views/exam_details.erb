@@ -9,85 +9,12 @@
 <body>
   <%= erb :_navbar %>
 
-  <div class="container-fluid bg-dark-alt border" id="examDetails"></div>
+  <div class="container-fluid " id="examDetails"></div>
 
-  <script>
-    window.addEventListener('load', function() {
-      var token = window.location.pathname.split('/')[2];
+  <script src="/js/examDetails.js"></script>
 
-      fetch('/exams/' + token)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Nenhum exame encontrado');
-          }
-          return response.json();
-        })
-        .then(data => {
-          const examDetailsDiv = document.getElementById('examDetails');
-
-          const patientDetailsHtml = `
-          <div class="row">
-            <div class="col">
-              <h2>Paciente</h2>
-              <table class="table table-striped">
-                <tr><td>Nome:</td><td>${data.Paciente.paciente_nome}</td></tr>
-                <tr><td>Data de Nascimento:</td><td>${data.Paciente.paciente_data_nascimento}</td></tr>
-                <tr><td>Endereço:</td><td>${data.Paciente.paciente_endereco}</td></tr>
-                <tr><td>Cidade:</td><td>${data.Paciente.paciente_cidade}</td></tr>
-                <tr><td>Estado:</td><td>${data.Paciente.paciente_estado}</td></tr>
-              </table>
-            </div>
-            <div class="col">
-              <h2>Médico</h2>
-              <table class="table table-striped">
-                <tr><td>Nome:</td><td>${data.Médico.medico_nome}</td></tr>
-                <tr><td>CRM:</td><td>${data.Médico.medico_crm}</td></tr>
-                <tr><td>Estado do CRM:</td><td>${data.Médico.medico_crm_estado}</td></tr>
-                <tr><td>Email:</td><td>${data.Médico.medico_email}</td></tr>
-              </table>
-            </div>
-          </div>`;
-
-          let examDetailsHtml = `<h3>Resultados</h3>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Limites</th>
-                  <th scope="col">Resultado</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>`;
-
-          data.Exames.Resultados.forEach(result => {
-            let parts = result.split(', ');
-            let tipo = parts[0].split(': ')[1];
-            let limites = parts[1].split(': ')[1];
-            let resultado = parseInt(parts[2].split(': ')[1]);
-
-            let limitesParts = limites.split('-');
-            let lowerLimit = parseInt(limitesParts[0]);
-            let upperLimit = parseInt(limitesParts[1]);
-
-            let icon = '<i class="bi bi-exclamation-diamond-fill text-danger"></i>';
-            if (resultado >= lowerLimit && resultado <= upperLimit) {
-              icon = '<i class="bi bi-check-circle-fill text-success"></i>';
-            }
-
-            examDetailsHtml += `<tr><td>${tipo}</td><td>${limites}</td><td>${resultado}</td><td>${icon}</td></tr>`;
-          });
-
-          examDetailsDiv.innerHTML = patientDetailsHtml + examDetailsHtml;
-        })
-        .catch(error => {
-          console.error('Erro:', error);
-        });
-    });
-  </script>
-
-  <%= erb :_search %>
+  <script src="/js/search.js"></script>
 </body>
 </html>
+
 
