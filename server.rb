@@ -33,7 +33,8 @@ def format_exam_results(token, exam_results)
 end
 
 def format_exam_details(token, exams)
-  patient_info = exams.first.slice('cpf', 'paciente_nome', 'paciente_email', 'paciente_data_nascimento', 'paciente_endereco', 'paciente_cidade', 'paciente_estado')
+  patient_info = exams.first.slice('cpf', 'paciente_nome', 'paciente_email', 'paciente_data_nascimento', 
+                                   'paciente_endereco', 'paciente_cidade', 'paciente_estado')
   doctor_info = exams.first.slice('medico_crm', 'medico_crm_estado', 'medico_nome', 'medico_email')
   exame_data = exams.first['exame_data']
 
@@ -43,7 +44,9 @@ def format_exam_details(token, exams)
     "Exames" => {
       "Exame Token" => token,
       "Data do Exame" => exame_data,
-      "Resultados" => exams.map.with_index { |exam, index| "#{index + 1}. Tipo: #{exam['exame_tipo']}, Limites: #{exam['exame_limites']}, Resultado: #{exam['exame_resultado']}" }
+      "Resultados" => exams.map.with_index 
+      { |exam, index| "#{index + 1}. Tipo: #{exam['exame_tipo']}, 
+      Limites: #{exam['exame_limites']}, Resultado: #{exam['exame_resultado']}" }
     }
   }
 end

@@ -1,14 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
-  <form action="/import" method="post" enctype="multipart/form-data" class="form-inline my-2 my-lg-0">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <form action="/import" method="post" enctype="multipart/form-data" class="form-inline my-2 my-lg-0 mr-auto">
     <input type="file" name="file" class="form-control mr-sm-2">
     <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Importar CSV">
   </form>
 
-  <form class="form-inline my-2 my-lg-0" id="searchForm">
+  <div class="navbar-brand mx-auto text-success font-weight-bold h1">REBASE LABS</div>
+
+  <form class="form-inline my-2 my-lg-0 ml-auto" id="searchForm">
     <input class="form-control mr-sm-2" type="search" placeholder="Digite seu token" aria-label="Search" id="searchInput">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
   </form>
-
+  
   <div id="errorMsg" class="mt-2"></div>
 </nav>
 
