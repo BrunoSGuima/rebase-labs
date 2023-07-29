@@ -44,9 +44,9 @@ def format_exam_details(token, exams)
     "Exames" => {
       "Exame Token" => token,
       "Data do Exame" => exame_data,
-      "Resultados" => exams.map.with_index 
-      { |exam, index| "#{index + 1}. Tipo: #{exam['exame_tipo']}, 
-      Limites: #{exam['exame_limites']}, Resultado: #{exam['exame_resultado']}" }
+      "Resultados" => exams.map.with_index do |exam, index|
+        "#{index + 1}. Tipo: #{exam['exame_tipo']}, Limites: #{exam['exame_limites']}, Resultado: #{exam['exame_resultado']}"
+      end
     }
   }
 end
