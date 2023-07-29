@@ -3,11 +3,10 @@
 <p align="center">
 
   <img src="http://img.shields.io/static/v1?label=Ruby&message=2.6.3&color=red&style=for-the-badge&logo=ruby"/>
-  <img src="http://img.shields.io/static/v1?label=JavaScript&color=red&style=for-the-badge&logo=javascript
   <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
 </p>
 
-> Status do Projeto: :warning: em desenvolvimento
+Status do Projeto: :warning: em desenvolvimento
 
 ### Tech Stack
 
@@ -45,6 +44,8 @@ Então temos a index que lista todos os pacientes, médicos e exames:
 
 Ao clicar em detalhes em um exame específico, o usuário é retornado para outra página com mais detalhes do paciente, médico e exame:
 ![exam_details](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/c02ecd1d-8157-4fe5-afab-b140fc947c8a)
+
+Caso o resultado do exame esteja dentro dos limites, o usuário verá um ícone (check) verde. Caso esteja abaixo ou acima dos limites, o usuário verá um ícone (exclamação) vermelho.
 
   
 ## Pré-requisitos
