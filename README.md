@@ -6,7 +6,6 @@
   <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
 </p>
 
-Status do Projeto: :warning: em desenvolvimento
 
 ### Tech Stack
 
@@ -31,16 +30,16 @@ Uma app web para listagem de exames médicos, o usuário pode acessar detalhes d
 
   O projeto possui 3 endpoints:
 1) O primeiro lê os dados de um arquivo CSV e renderiza no formato JSON:
-![jsontests](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/5d0b44e9-032b-4221-8122-eaf247cb9f76)
+![jsontests](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/0aff64f9-b7cb-46a5-9799-fb047b7c546a)
 
 2) O segundo endpoint devolve uma listagem dos exames em JSON já agrupada:
-![jsonexams](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/e648997c-45ef-425a-adfc-7342f4aa8673)
+![jsonexamstoken](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/aa939738-4ded-4a97-9309-c03c568a6e20)
 
 3) O terceiro endpoint devolve um exame específico a partir do token:
 ![jsonexamstoken](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/f5653eb5-04d9-469b-ac28-b0bd48ca0c4b)
 
 Então temos a index que lista todos os pacientes, médicos e exames:
-![index](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/c245010b-834b-432a-bf86-c8f6887dcab0)
+![index](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/c1125d39-e65a-4308-ae89-73d1159c4ddf)
 
 Ao clicar em detalhes em um exame específico, o usuário é retornado para outra página com mais detalhes do paciente, médico e exame:
 ![exam_details](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/c02ecd1d-8157-4fe5-afab-b140fc947c8a)
