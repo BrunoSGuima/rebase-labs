@@ -33,7 +33,7 @@ Uma app web para listagem de exames médicos, o usuário pode acessar detalhes d
 ![jsontests](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/0aff64f9-b7cb-46a5-9799-fb047b7c546a)
 
 2) O segundo endpoint devolve uma listagem dos exames em JSON já agrupada:
-![jsonexamstoken](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/aa939738-4ded-4a97-9309-c03c568a6e20)
+![jsonexams](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/812a0dd6-dee7-4dcd-abf6-47ce5f892d79)
 
 3) O terceiro endpoint devolve um exame específico a partir do token:
 ![jsonexamstoken](https://github.com/BrunoSGuima/rebase-labs/assets/105590450/f5653eb5-04d9-469b-ac28-b0bd48ca0c4b)
