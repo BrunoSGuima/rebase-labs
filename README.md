@@ -67,9 +67,16 @@ git clone https://github.com/BrunoSGuima/rebase-labs.git
 
 cd rebase-labs
 
-3. Instale as dependências do projeto:
+3. Rode o docker compose:
+docker compose up
 
 4. Abra o [local](http://localhost:3000/)
 Clique em 'browse', na página do projeto selecione o arquivo "data.csv", e então clique em 'Importar CSV'.
 Aguarde enquanto o Sidekiq processa o arquivo.
 Atualize a página.
+
+## Licença 
+
+The [MIT License]() (MIT)
+
+Copyright :copyright: 2023 - Rebase Labs
