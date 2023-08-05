@@ -6,7 +6,9 @@ services:
     volumes:
       - .:/app
       - labs-gems:/usr/local/bundle
-    command: bash -c "bundle install && ruby server.rb"
+    command: bash -c "chmod +x ./scripts/wait-for-it.sh &&
+      ./scripts/wait-for-it.sh db:5432 -- bundle install &&
+      ruby server.rb"
     environment: 
       REDIS_URL: redis://redis:6379/0
     ports:
@@ -20,11 +22,12 @@ services:
     volumes:
       - .:/app
       - labs-gems:/usr/local/bundle
-    command: bash -c "bundle exec sidekiq -r ./app/worker.rb"
+    command: bash -c "bundle && bundle exec sidekiq -r ./app/worker.rb"
     environment:
       REDIS_URL: redis://redis:6379/0
     depends_on:
       - redis
+      - web
   redis:
     image: redis
   db:
@@ -36,6 +39,7 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - ./postgres-data-rebase-labs:/var/lib/postgresql/data
+      - ./app/tables.sql:/docker-entrypoint-initdb.d/tables.sql
 
 volumes:
   labs-gems:
